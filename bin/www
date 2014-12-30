@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+var debug = require('debug')('IBM-BlueMix');
+var app = require('../app');
+
+// extract the host address and port that has been set by the environment
+// Default to localhost:3000 when running locally
+var port = (process.env.VCAP_APP_PORT || 3000);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+
+app.set('port', port);
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
