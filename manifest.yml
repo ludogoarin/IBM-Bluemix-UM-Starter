@@ -14,6 +14,8 @@ applications:
   path: .
   # run this command to initiate the application
   command: node ./bin/www
+  # set instance size (free tier is 512M)
+  memory: 512M
   # create 1 server instance
   instances: 1
 

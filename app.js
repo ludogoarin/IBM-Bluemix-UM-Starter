@@ -5,8 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes/index'),
+    tweets = require('./routes/tweets');
+
+var config        = require('./config/config'),
+    userModeling  = require('./util/user-modeling'),
+    twitterHelper = require('./util/twitter-helper');
 
 var app = express();
 
@@ -21,16 +25,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', routes);
-app.use('/users', users);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
 
 // error handlers
 
@@ -56,5 +50,30 @@ app.use(function(err, req, res, next) {
     });
 });
 
+
+
+// Create the twitter helper
+var twit = new twitterHelper(config.services.twitter);
+
+// Create the user modeling service
+var user_modeling = new userModeling(config.services.user_modeling);
+
+
+// Make the services accessible to the router
+app.use(function(req,res,next){
+    req.twit = twit;
+    req.user_modeling = user_modeling;
+    next();
+});
+
+app.use('/', routes);
+app.get('/tweets/@:username', tweets);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
 module.exports = app;

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Twitter Watson Proto</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/main.js"></script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>Analyzing tweets with IBM Watson</h1>
+
+    <input name="handle" id="handle" type="text"  onkeypress="if (event.keyCode == 13) { loadHandle() }" /> <button onclick="loadHandle();">Look-up this Twitter handle</button>
   </body>
 </html>

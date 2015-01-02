@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="/javascripts/main.js"></script>
+  </head>
+  <body>
+    <h2>Tweeter User</h2>
+    <%if(user != null){%>
+    <p>This page displays profile analysis by Watson of <%= user.tweets%> tweets from @<%=user.username%></p>
+    <p>
+      <input name="handle" id="handle" type="text" onkeypress="if (event.keyCode == 13) { loadHandle() }" /> <button onclick="loadHandle();">Look-up this other Twitter handle</button>
+    </p>
+    <p>
+      <img src="<%= user.image%>">
+      <br>
+      <%= user.name %>
+    </p>
+
+
+    <h2>Watson Analysis</h2>
+    <p>
+      Word count: <%=user.profile.word_count%>
+    </p>
+
+    <ul>
+      <% for(var i=0; i<user.profile.tree.children.length; i++) {
+        var topItem = user.profile.tree.children[i];
+      %>
+      <li><h4><%= topItem.name %></h4>
+
+        <ul>
+          <% for(var si=0; si<topItem.children.length; si++) {
+            var subItem = topItem.children[si];
+            console.log('subItem');
+            console.log(subItem);
+          %>
+          <li><%= subItem.name %>: <%= subItem.percentage * 100 %>%</li>
+
+          <ul>
+            <% for(var ssi=0; ssi<subItem.children.length; ssi++) {
+              var subSubItem = subItem.children[ssi];
+              console.log('subSubItem');
+              console.log(subSubItem);
+            %>
+            <li><%= subSubItem.name %>: <%= subSubItem.percentage * 100 %>%</li>
+            <% } %>
+          </ul>
+
+          <% } %>
+        </ul>
+
+      </li>
+      <% } %>
+    </ul>
+
+
+
+    <%}%>
+
+
+  </body>
+</html>
